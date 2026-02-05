@@ -27,7 +27,7 @@ app.use('/api/auth', (req, res) => {
   ApiResponse.success(res, { message: 'Auth routes - Coming soon!' });
 });
 
-app.use('*', (req, res) => {
+app.use('/{*splat}', (req, res) => {
   ApiResponse.error(res, 'Route not found', 404);
 });
 
