@@ -20,21 +20,18 @@ const logger = winston.createLogger({
     winston.format.json()
   ),
   transports: [
-    // Console output (colorized for dev)
     new winston.transports.Console({
       format: winston.format.combine(
         winston.format.colorize(),
         logFormat
       )
     }),
-    // Error log file
     new winston.transports.File({
       filename: path.join('logs', 'error.log'),
       level: 'error',
       maxsize: 5242880, // 5MB
       maxFiles: 5
     }),
-    // Combined log file
     new winston.transports.File({
       filename: path.join('logs', 'combined.log'),
       maxsize: 5242880,

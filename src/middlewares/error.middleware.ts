@@ -21,17 +21,14 @@ export const errorHandler = (
     return ApiResponse.error(res, err.message, err.statusCode);
   }
 
-  // Handle Mongoose validation errors
   if (err.name === 'ValidationError') {
     return ApiResponse.error(res, 'Validation failed', 400, err.message);
   }
 
-  // Handle Mongoose duplicate key errors
   if (err.name === 'MongoServerError' && (err as any).code === 11000) {
     return ApiResponse.error(res, 'Duplicate entry', 409);
   }
 
-  // Handle JWT errors
   if (err.name === 'JsonWebTokenError') {
     return ApiResponse.error(res, 'Invalid token', 401);
   }
@@ -40,7 +37,6 @@ export const errorHandler = (
     return ApiResponse.error(res, 'Token expired', 401);
   }
 
-  // Default error
   return ApiResponse.error(
     res,
     process.env.NODE_ENV === 'development' ? err.message : 'Internal server error',
