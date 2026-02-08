@@ -62,7 +62,6 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-userSchema.index({ email: 1 });
 userSchema.index({ role: 1 });
 
 userSchema.pre('save', async function () {

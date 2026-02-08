@@ -5,15 +5,19 @@ import { loggingMiddleware } from './middlewares/logging.middleware';
 import { errorHandler } from './middlewares/error.middleware';
 import { ApiResponse } from './utils/response';
 
+// Import routes
+import authRoutes from './modules/auth/auth.routes';
+
 const app: Application = express();
 
+// Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(requestIdMiddleware);
 app.use(loggingMiddleware);
 
-
+// Health check
 app.get('/health', (req, res) => {
   ApiResponse.success(res, {
     status: 'ok',
@@ -22,16 +26,15 @@ app.get('/health', (req, res) => {
   });
 });
 
+// API Routes
+app.use('/api/auth', authRoutes);
 
-app.use('/api/auth', (req, res) => {
-  ApiResponse.success(res, { message: 'Auth routes - Coming soon!' });
-});
-
-app.use('/{*splat}', (req, res) => {
+// 404 handler
+app.use((req, res) => {
   ApiResponse.error(res, 'Route not found', 404);
 });
 
-
+// Error handler (must be last)
 app.use(errorHandler);
 
 export default app;
